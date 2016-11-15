@@ -1,0 +1,193 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="text-center">PLAYER 1</div>
+            <div class="text-center">Score: <span id="player-score">0</span></div>
+
+            <div class="text-center">
+                <img src="~/Content/Images/paper.png" id="player-hand">
+                <div id="player-hand-text"></div>
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-default" id="btn-rock">ROCK!</button>
+                <button class="btn btn-default" id="btn-paper">PAPER!</button>
+                <button class="btn btn-default" id="btn-scissors">SCISSORS!</button>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="text-center">VS</div>
+
+            <div id="result" class="text-center"></div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="text-center">Computer</div>
+            <div class="text-center">Score: <span id="computer-score">0</span></div>
+
+            <div class="text-center">
+                <img src="~/Content/Images/paper.png" id="computer-hand">
+                <div id="computer-hand-text"></div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+<div id="resultModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">RESULTS</h4>
+            </div>
+            <div class="modal-body">
+                <p id="modal-text-result"></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#btn-rock").click(function () {
+                $("#player-hand").attr("src", '/Content/Images/rock.png');
+                $("#player-hand-text").text("ROCKKKKKKKK!!!!");
+
+
+                var computerMove = GenerateRandomNumber();
+                GetComputerMove(computerMove)
+
+                if (computerMove == 2)
+                {
+                    var score = parseInt($("#computer-score").text(), 10) + 1;
+                    $("#computer-score").text(score);
+                    $("#result").text("COMPUTER WINS!");
+                }
+
+                else if (computerMove == 3) {
+                    var score = parseInt($("#player-score").text(), 10) + 1;
+                    $("#player-score").text(score);
+                    $("#result").text("PLAYER WINS!");
+                }
+
+                else {
+                    $("#result").text("DRAW!");
+                }
+
+                EvaluateScore();
+            });
+
+            $("#btn-paper").click(function () {
+                $("#player-hand").attr("src", '/Content/Images/paper.png');
+                $("#player-hand-text").text("PAAAAPERRR!!!!");
+
+                var computerMove = GenerateRandomNumber();
+                GetComputerMove(computerMove)
+
+                if (computerMove == 1) {
+                    var score = parseInt($("#player-score").text(),10)+1;
+                    $("#player-score").text(score);
+                    $("#result").text("PLAYER WINS!");
+                }
+
+                else if (computerMove == 3) {
+                    var score = parseInt($("#computer-score").text(), 10) + 1;
+                    $("#computer-score").text(score);
+                    $("#result").text("COMPUTER WINS!");
+                }
+
+                else {
+                    $("#result").text("DRAW!");
+                }
+
+                EvaluateScore();
+
+            });
+
+            $("#btn-scissors").click(function () {
+                $("#player-hand").attr("src", '/Content/Images/scissors.png');
+                $("#player-hand-text").text("SCISSCOOOORRRSS!!!!");
+
+                var computerMove = GenerateRandomNumber();
+                GetComputerMove(computerMove)
+
+                if (computerMove == 2) {
+                    var score = parseInt($("#player-score").text(),10)+1;
+                    $("#player-score").text(score);
+                    $("#result").text("PLAYER WINS!");
+
+                }
+
+                else if (computerMove == 1) {
+                    var score = parseInt($("#computer-score").text(), 10) + 1;
+                    $("#computer-score").text(score);
+                    $("#result").text("COMPUTER WINS!");
+                }
+
+                else {
+                    $("#result").text("DRAW!");
+                }
+
+                EvaluateScore();
+
+            });
+
+            function GenerateRandomNumber() {
+                var min = 1;
+                var max = 3;
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            function GetComputerMove(number) {
+                if(number == 1)
+                {
+                    $("#computer-hand").attr("src", '/Content/Images/rock.png');
+                    $("#computer-hand-text").text("ROOCKKKKK!!!!");
+                }
+
+                else if (number == 2) {
+                    $("#computer-hand").attr("src", '/Content/Images/paper.png');
+                    $("#computer-hand-text").text("PAAAAPERRR!!!!");
+                }
+
+                else {
+                    $("#computer-hand").attr("src", '/Content/Images/scissors.png');
+                    $("#computer-hand-text").text("SCISSSORRSSSS!!!!");
+                }
+            }
+
+
+            function EvaluateScore()
+            {
+                if ($("#player-score").text() == 5)
+                {
+                    GetWinner("You Win!!!!")
+
+                    $("#player-score").text(0)
+                    $("#computer-score").text(0)
+
+                }
+
+                else if ($("#computer-score").text() == 5)
+                {
+                    GetWinner("Computer Wins!!!")
+
+                    $("#player-score").text(0)
+                    $("#computer-score").text(0)
+
+                }
+            }
+
+            function GetWinner(text)
+            {
+                $("#modal-text-result").text(text);
+                $("#resultModal").modal('show');
+            }
+        });
+    </script>
+}
